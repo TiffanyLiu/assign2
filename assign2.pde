@@ -7,7 +7,7 @@ float rightCar2X, rightCar2Y, rightCar2W, rightCar2H;//car4
 float pondY;
 
 float speed;
-
+int currentTime = 0;
 int life;
 
 final int GAME_START = 1;
@@ -23,7 +23,7 @@ PImage imgLeftCar1, imgLeftCar2;
 PImage imgRightCar1, imgRightCar2;
 PImage imgWinFrog, imgLoseFrog;
 
-void setup(){
+void setup (){
   size(640,480);
   textFont(createFont("font/Square_One.ttf", 20));
   // initial state
@@ -62,6 +62,7 @@ void setup(){
   imgLoseFrog = loadImage("data/lose.png");
 }
 
+
 void draw(){
   switch (gameState){
     case GAME_START:
@@ -69,10 +70,11 @@ void draw(){
         text("Press Enter", width/3, height/2);    
         break;
     case FROG_DIE:
-        delay(1000);
-        frogX=frogInitX;
-        frogY=frogInitY;
-        gameState = GAME_RUN;
+    if(millis()-currentTime >= 1000){
+      frogX=frogInitX;
+      frogY=frogInitY;
+      gameState = GAME_RUN;
+    }
         break;
     case GAME_RUN:
         background(10,110,16);
@@ -124,10 +126,44 @@ void draw(){
   
          float frogCX = frogX+frogW/2;
          float frogCY = frogY+frogH/2;
-         // car1 hitTest
-         // car2 hitTest
-         // car3 hitTest
-         // car4 hitTest
+        
+//hit test completed**
+         // leftCar1 hitTest
+        if (( leftCar1X<=frogX+16)&&(leftCar1X>=frogX-16)&&(leftCar1Y==frogY))
+          {
+            currentTime = millis();
+            image(imgDeadFrog, frogX, frogY);
+            life--;
+            gameState = FROG_DIE;
+          }
+          // leftCar2
+           if (( leftCar2X<=frogX+16)&&(leftCar2X>=frogX-16)&&(leftCar2Y==frogY))
+          {
+            currentTime = millis();
+            image(imgDeadFrog, frogX, frogY);
+            life--;
+            gameState = FROG_DIE;
+          }
+          //rightCar1
+           if (( rightCar1X<=frogX+16)&&(rightCar1X>=frogX-16)&&(rightCar1Y==frogY))
+          {
+            currentTime = millis();
+            image(imgDeadFrog, frogX, frogY);
+            life--;
+            gameState = FROG_DIE;
+          }
+          //rightCar2
+           if (( rightCar2X<=frogX+16)&&(rightCar2X>=frogX-16)&&(rightCar2Y==frogY))
+          {
+            currentTime = millis();
+            image(imgDeadFrog, frogX, frogY);
+            life--;
+            gameState = FROG_DIE;
+          }
+//frog go into the pond completed**
+          if((frogY>=32)&&(frogY<64)){
+            gameState = GAME_WIN;
+          }
         break;
     case GAME_WIN:
         background(0);
@@ -150,23 +186,24 @@ void keyPressed() {
       switch( keyCode )
       {
           case UP:
-          frogY=frogY-2;
+          frogY=frogY-32;
           break;
           
           case DOWN:
-          frogY=frogY+2;
+          frogY=frogY+32;
           break;
         
           case LEFT:
-          frogX=frogX-2;
+          frogX=frogX-32;
           break;
           
           case RIGHT:
-          frogX=frogX+2;
+          frogX=frogX+32;
           break;
       }
     }
-    //edge *COMPLETED*
+
+//edge *COMPLETED*
     if(frogX<0){frogX=0;}
   else if ( frogX > width - imgFrog.width){frogX = width - imgFrog.width; }
   else if (frogY < 0){ frogY = 0;}
