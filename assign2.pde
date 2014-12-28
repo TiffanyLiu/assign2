@@ -164,6 +164,8 @@ void draw(){
           if((frogY>=32)&&(frogY<64)){
             gameState = GAME_WIN;
           }
+          if(life==0){
+          gameState=GAME_LOSE;}
         break;
     case GAME_WIN:
         background(0);
